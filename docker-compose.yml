@@ -1,0 +1,39 @@
+version: '3'
+services:
+  todolist_database:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - todolist_db_volumn:/var/lib/mongodb/data
+    networks:
+      - todolist_network
+    restart: always
+
+  todolist_backend:
+    depends_on:
+      - todolist_database
+    build: ./server
+    image: todolist_backend
+    env_file:
+      - ./server/.env
+    networks:
+      - todolist_network
+    ports:
+      - 8080:8080
+
+  todolist_frontend:
+    depends_on:
+      - todolist_backend
+    build: ./client
+    image: todolist_frontend
+    env_file:
+      - ./client/.env
+    networks:
+      - todolist_network
+    ports:
+      - 3000:3000
+networks:
+  todolist_network:
+volumes:
+  todolist_db_volumn:
