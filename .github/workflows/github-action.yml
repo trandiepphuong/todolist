@@ -30,7 +30,8 @@ jobs:
     - name: push docker image
       run: |
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker push $DOCKER_USERNAME/$CONTAINER_NAME:${{ GITHUB.SHA }}
+        docker push $DOCKER_USERNAME/todolist_frontend:${{ GITHUB.SHA }}
+        docker push $DOCKER_USERNAME/todolist_backend:${{ GITHUB.SHA }}
         
 
   deploy:
