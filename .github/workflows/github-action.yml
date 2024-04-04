@@ -19,7 +19,7 @@ jobs:
 
     - name: build docker image
       run: |
-        docker build -t $DOCKER_USERNAME/$CONTAINER_NAME:${{ GITHUB.SHA }} .
+        sudo docker build -t $DOCKER_USERNAME/$CONTAINER_NAME:${{ GITHUB.SHA }} .
 
   push-image:
     runs-on: self-hosted
