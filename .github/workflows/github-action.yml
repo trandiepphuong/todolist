@@ -1,0 +1,55 @@
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ vars.DOCKER_PASSWORD }}
+  CONTAINER_NAME: golang-devops
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: build docker image
+      run: |
+        docker build -t cuongquocvn/golang-devops:1.0.0
+
+  push-image:
+    runs-on: self-hosted
+    needs: build
+    steps:
+    - name: push docker image
+      run: |
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker push cuongquocvn/golang-devops:${{ GITHUB.SHA }}
+        
+
+  deploy:
+    permissions:
+      contents: none
+    runs-on: self-hosted
+    needs: push-image
+
+    steps:
+    - name: run docker image
+      run: |
+        containerId=$(docker ps -qa --filter "name=^$CONTAINER_NAME\$")
+        if [ -n "$containerId" ]; then
+        echo "Stop and remove existing container..."
+        docker stop $CONTAINER_NAME | xargs docker rm
+        fi
+
+        docker rmi $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG || true
+        docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+ 
+        echo "Start new container..."
+        docker run -d --name $CONTAINER_NAME -p 8080:8080
+        
+        
