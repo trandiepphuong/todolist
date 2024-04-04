@@ -19,6 +19,7 @@ jobs:
 
     - name: build docker image
       run: |
+        pwd
         docker build -t $DOCKER_USERNAME/todolist_frontend:${{ GITHUB.SHA }} -f client/Dockerfile .
         docker build -t $DOCKER_USERNAME/todolist_backend:${{ GITHUB.SHA }}  -f server/Dockerfile .
 
