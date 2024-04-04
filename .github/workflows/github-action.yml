@@ -19,8 +19,8 @@ jobs:
 
     - name: build docker image
       run: |
-        docker build -f ./client/Dockerfile -t $DOCKER_USERNAME/todolist_frontend:${{ GITHUB.SHA }} .
-        docker build -f ./server/Dockerfile -t $DOCKER_USERNAME/todolist_backend:${{ GITHUB.SHA }} .
+        docker build -t $DOCKER_USERNAME/todolist_frontend:${{ GITHUB.SHA }} -f ./client/Dockerfile .
+        docker build -t $DOCKER_USERNAME/todolist_backend:${{ GITHUB.SHA }}  -f ./server/Dockerfile .
 
   push-image:
     runs-on: self-hosted
