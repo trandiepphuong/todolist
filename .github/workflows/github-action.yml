@@ -1,12 +1,12 @@
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ vars.DOCKER_PASSWORD }}
-  CONTAINER_NAME: golang-devops
+  CONTAINER_NAME: todolist
 
 permissions:
   contents: read
