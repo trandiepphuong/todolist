@@ -19,9 +19,10 @@ jobs:
 
     - name: build docker image
       run: |
+        export COMMIT_SHA_SHORT=echo ${GITHUB_SHA} | cut -c1-7
         pwd
-        docker build -t $DOCKER_USERNAME/todolist_frontend:${{ GITHUB.SHA }} -f client/Dockerfile client
-        docker build -t $DOCKER_USERNAME/todolist_backend:${{ GITHUB.SHA }}  -f server/Dockerfile server
+        docker build -t $DOCKER_USERNAME/todolist_frontend:$COMMIT_SHA_SHORT -f client/Dockerfile client
+        docker build -t $DOCKER_USERNAME/todolist_backend:$COMMIT_SHA_SHORT  -f server/Dockerfile server
 
   push-image:
     runs-on: self-hosted
@@ -29,9 +30,10 @@ jobs:
     steps:
     - name: push docker image
       run: |
+        export COMMIT_SHA_SHORT=echo ${GITHUB_SHA} | cut -c1-7
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker push $DOCKER_USERNAME/todolist_frontend:${{ GITHUB.SHA }}
-        docker push $DOCKER_USERNAME/todolist_backend:${{ GITHUB.SHA }}
+        docker push $DOCKER_USERNAME/todolist_frontend:$COMMIT_SHA_SHORT
+        docker push $DOCKER_USERNAME/todolist_backend:$COMMIT_SHA_SHORT
         
 
   deploy:
@@ -43,6 +45,7 @@ jobs:
     steps:
     - name: run docker image
       run: |
+        export COMMIT_SHA_SHORT=echo ${GITHUB_SHA} | cut -c1-7
         docker compose up -d
         
         
