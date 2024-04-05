@@ -14,7 +14,7 @@ services:
     depends_on:
       - todolist_database
     build: ./server
-    image: "todolist_backend:$${GITHUB.SHA}"
+    image: "todolist_backend:$${GIT_SHA}"
     env_file:
       - ./server/.env
     networks:
@@ -26,7 +26,7 @@ services:
     depends_on:
       - todolist_backend
     build: ./client
-    image: "todolist_frontend:$${GITHUB.SHA}"
+    image: "todolist_frontend:$${GIT_SHA}"
     env_file:
       - ./client/.env
     networks:
