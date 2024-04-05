@@ -19,7 +19,7 @@ jobs:
 
     - name: build docker image
       run: |
-        export COMMIT_SHA_SHORT=echo ${GITHUB.SHA} | cut -c1-7
+        export COMMIT_SHA_SHORT=`echo ${GITHUB_SHA} | cut -c1-7`
         echo $COMMIT_SHA_SHORT
         docker build -t $DOCKER_USERNAME/todolist_frontend:$COMMIT_SHA_SHORT -f client/Dockerfile client
         docker build -t $DOCKER_USERNAME/todolist_backend:$COMMIT_SHA_SHORT  -f server/Dockerfile server
@@ -30,7 +30,7 @@ jobs:
     steps:
     - name: push docker image
       run: |
-        export COMMIT_SHA_SHORT=echo ${GITHUB_SHA} | cut -c1-7
+        export COMMIT_SHA_SHORT=`echo ${GITHUB_SHA} | cut -c1-7`
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push $DOCKER_USERNAME/todolist_frontend:$COMMIT_SHA_SHORT
         docker push $DOCKER_USERNAME/todolist_backend:$COMMIT_SHA_SHORT
@@ -45,7 +45,7 @@ jobs:
     steps:
     - name: run docker image
       run: |
-        export COMMIT_SHA_SHORT=echo ${GITHUB_SHA} | cut -c1-7
+        export COMMIT_SHA_SHORT=`echo ${GITHUB_SHA} | cut -c1-7`
         docker compose up -d
         
         
