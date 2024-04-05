@@ -14,7 +14,7 @@ services:
     depends_on:
       - todolist_database
     build: ./server
-    image: "todolist_backend:$COMMIT_SHA_SHORT"
+    image: "$BE_IMAGE_NAME:$COMMIT_SHA_SHORT"
     env_file:
       - ./server/.env
     networks:
@@ -26,7 +26,7 @@ services:
     depends_on:
       - todolist_backend
     build: ./client
-    image: "todolist_frontend:$COMMIT_SHA_SHORT"
+    image: "$FE_IMAGE_NAME:$COMMIT_SHA_SHORT"
     env_file:
       - ./client/.env
     networks:

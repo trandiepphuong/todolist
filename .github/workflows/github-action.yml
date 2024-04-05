@@ -7,7 +7,8 @@ env:
   DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ vars.DOCKER_PASSWORD }}
   CONTAINER_NAME: todolist
-
+  BE_IMAGE_NAME: todolist_backend
+  FE_IMAGE_NAME: todolist_frontend
 permissions:
   contents: read
 
@@ -21,8 +22,8 @@ jobs:
       run: |
         export COMMIT_SHA_SHORT=`echo ${GITHUB_SHA} | cut -c1-7`
         echo $COMMIT_SHA_SHORT
-        docker build -t $DOCKER_USERNAME/todolist_frontend:$COMMIT_SHA_SHORT -f client/Dockerfile client
-        docker build -t $DOCKER_USERNAME/todolist_backend:$COMMIT_SHA_SHORT  -f server/Dockerfile server
+        docker build -t $DOCKER_USERNAME/$BE_IMAGE_NAME:$COMMIT_SHA_SHORT -f client/Dockerfile client
+        docker build -t $DOCKER_USERNAME/$FE_IMAGE_NAME:$COMMIT_SHA_SHORT  -f server/Dockerfile server
 
   push-image:
     runs-on: self-hosted
@@ -32,8 +33,8 @@ jobs:
       run: |
         export COMMIT_SHA_SHORT=`echo ${GITHUB_SHA} | cut -c1-7`
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker push $DOCKER_USERNAME/todolist_frontend:$COMMIT_SHA_SHORT
-        docker push $DOCKER_USERNAME/todolist_backend:$COMMIT_SHA_SHORT
+        docker push $DOCKER_USERNAME/$BE_IMAGE_NAME:$COMMIT_SHA_SHORT
+        docker push $DOCKER_USERNAME/$FE_IMAGE_NAME:$COMMIT_SHA_SHORT
         
 
   deploy:
